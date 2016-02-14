@@ -12,12 +12,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 
 public class MainActivity extends AppCompatActivity implements AboutApp.OnFragmentInteractionListener {
 
     static int currFrag = 0;
+    Drawer drawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements AboutApp.OnFragme
         }
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         DrawerBuilder db = new DrawerBuilder();
-        db
+        drawer = db
                 .withActivity(this)
                 .withToolbar(toolbar)
                 .addDrawerItems(
@@ -94,6 +97,16 @@ public class MainActivity extends AppCompatActivity implements AboutApp.OnFragme
     public void onRestoreInstanceState(Bundle state) {
         super.onRestoreInstanceState(state);
         currFrag = state.getInt("frag");
+    }
+
+    @Override
+    public void onBackPressed(){
+        if(drawer.isDrawerOpen()){
+            drawer.closeDrawer();
+        }
+        else{
+            super.onBackPressed();
+        }
     }
 
     public void onSaveInstanceState(Bundle state) {
