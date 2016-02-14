@@ -11,4 +11,5 @@
     <string name="ND_Recent">Недавние</string>
     <string name="ND_Settings">Настройки</string>
     <string name="find_parking">Найти парковку</string>
+    <string name="ND_Parkings">Парковки</string>
 </resources>

@@ -1,18 +1,20 @@
 package sp.com.parkreminder;
 
-import android.graphics.Color;
-import android.net.Uri;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.LayoutInflaterCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -20,16 +22,11 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.iconics.context.IconicsLayoutInflater;
-import com.mikepenz.materialdrawer.AccountHeader;
-import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
-import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
-import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
-import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
 public class MainActivity extends AppCompatActivity implements AboutApp.OnFragmentInteractionListener {
 
@@ -40,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements AboutApp.OnFragme
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
     private GoogleApiClient client;
+    private SharedPreferences sp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +46,8 @@ public class MainActivity extends AppCompatActivity implements AboutApp.OnFragme
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        sp = PreferenceManager.getDefaultSharedPreferences(this);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -68,48 +68,48 @@ public class MainActivity extends AppCompatActivity implements AboutApp.OnFragme
             fm.replace(R.id.fragment, new AboutApp());
             fm.commit();
         }
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        try {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
 
-        AccountHeader headerResult = new AccountHeaderBuilder()
-                .withActivity(this)
-                .withHeaderBackground(R.drawable.success)
-                .addProfiles(
-                        new ProfileDrawerItem().withName("Гость").withEmail("test@test.com").withIcon(getResources().getDrawable(R.drawable.material_drawer_shadow_left))
-                )
-                .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
-                    @Override
-                    public boolean onProfileChanged(View view, IProfile profile, boolean currentProfile) {
-                        return false;
-                    }
-                })
-                .build();
         DrawerBuilder db = new DrawerBuilder();
+
+        final PrimaryDrawerItem i1 = new PrimaryDrawerItem()
+                .withIcon(new IconicsDrawable(this)
+                                .icon(CommunityMaterial.Icon.cmd_clock)
+                                .color(Color.BLACK)
+                )
+                .withName(R.string.ND_Recent);
+        final PrimaryDrawerItem i2 = new PrimaryDrawerItem()
+                .withIcon(new IconicsDrawable(this)
+                        .icon(CommunityMaterial.Icon.cmd_parking)
+                        .color(Color.BLACK))
+                .withName(R.string.ND_Parkings);
+        final PrimaryDrawerItem i3 = new PrimaryDrawerItem()
+                .withIcon(new IconicsDrawable(this).icon(CommunityMaterial.Icon.cmd_settings))
+                .withName(R.string.ND_Settings);
         drawer = db
                 .withActivity(this)
                 .withTranslucentStatusBar(true)
                 .withToolbar(toolbar)
                 .withHeader(R.layout.drawer_header)
                 .addDrawerItems(
-                        new PrimaryDrawerItem()
-                                .withIcon(new IconicsDrawable(this)
-                                                .icon(CommunityMaterial.Icon.cmd_clock)
-                                                .color(Color.BLACK)
-                                )
-                                .withName(R.string.ND_Recent),
+                        i1,
+                        i2,
                         new DividerDrawerItem(),
-                        new PrimaryDrawerItem()
-                                .withIcon(new IconicsDrawable(this).icon(CommunityMaterial.Icon.cmd_settings))
-                                .withName(R.string.ND_Settings)
+                        i3
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                         FragmentTransaction fm = getFragmentManager().beginTransaction();
-                        if(position == 3) {
+                        if (drawerItem.equals(i3)) {
                             Fragment f1 = new AboutApp();
                             fm.replace(R.id.fragment, f1);
                             currFrag = position;
-                        } else if(position == 1) {
+                        } else if (drawerItem.equals(i1)) {
                             Fragment f1 = new MainActivityFragment();
                             fm.replace(R.id.fragment, f1);
                             currFrag = position;

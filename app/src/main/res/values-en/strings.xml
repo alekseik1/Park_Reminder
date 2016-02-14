@@ -9,4 +9,5 @@
     <string name="SP_Notif">Notifications</string>
     <string name="ND_Recent">Recent places</string>
     <string name="ND_Settings">Settings</string>
+    <string name="ND_Parkings">Parkings</string>
 </resources>
