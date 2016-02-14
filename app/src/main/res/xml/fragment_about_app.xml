@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+    <CheckBoxPreference
+        android:key="notif"
+        android:summary="@string/SP_Enable_Notif"
+        android:title="@string/SP_Notif">
+    </CheckBoxPreference>
+    <EditTextPreference
+        android:key="address"
+        android:summary="Address for notifications"
+        android:title="Address">
+    </EditTextPreference>
+</PreferenceScreen>

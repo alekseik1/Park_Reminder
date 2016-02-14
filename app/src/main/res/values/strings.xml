@@ -6,4 +6,8 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="vashe_mesto">Ваше место</string>
     <string name="near_parkings">Парковки рядом</string>
+    <string name="SP_Enable_Notif">Включить уведомления</string>
+    <string name="SP_Notif">Уведомления</string>
+    <string name="ND_Recent">Недавние</string>
+    <string name="ND_Settings">Настройки</string>
 </resources>

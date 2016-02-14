@@ -3,6 +3,7 @@ package sp.com.parkreminder;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceFragment;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +18,7 @@ import android.view.ViewGroup;
  * Use the {@link AboutApp#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AboutApp extends Fragment {
+    public class AboutApp extends PreferenceFragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -58,13 +59,7 @@ public class AboutApp extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_about_app, container, false);
+        addPreferencesFromResource(R.xml.fragment_about_app);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
